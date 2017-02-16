@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<title>Hometask js 13-14</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script src="js/tmpl.js"></script>
+	<script type="text/javascript" src="js/script.js"></script> 
+</head>
+<body>
+	<script type="text/tmpl" id="wrapper-template">
+		<div class="wrapper">
+			<ul class="item-list"></ul>
+			<div class="controller">
+				<input type="text" class="item-value">
+				<button class="item-add">Add</button>
+			</div>
+		</div>
+	</script>
+
+	<script type="text/tmpl" id="list-template">
+		<% for (var i = 0; i < data.length; i++) { %>
+			<li><% data[i] %><span class="item-delete">x</span></li>
+		<% }; %>
+	</script>
+
+	
+</body>
+</html>
