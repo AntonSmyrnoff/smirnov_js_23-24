@@ -13,6 +13,7 @@ function Model(data) {
     return self.data;
   };
 
+  
   self.removeItem = function (item) {
     var index = self.data.indexOf(item);
 
@@ -25,21 +26,24 @@ function Model(data) {
     return self.data;
   };
 
+  
   self.editItem = function (item) {
     var index = self.data.indexOf(item); //получаем индекс редактируемого элемента
 
     var editedItem = self.data.slice(index, index+1); // берем сам элемент для редактирования и возвращаем его
 
     return editedItem;
-
   };
 
+  
   self.replaceEditedItem = function (item, index) {
     if (item.length == 0) {
       return;
     }
 
-    self.data.splice(index, index+1, item);
+    self.data.splice(index, 1, item);
+    console.log('itemIndex in Model: ', index);
+    console.log('');
     return self.data;
 
   }
@@ -79,6 +83,8 @@ function Controller(model, view) {
   view.elements.listContainer.on('click', '.item-edit', editItem);
 
   function addItem() {
+    if( !$(this).hasClass('item-add') )
+      return;
     var newItem = view.elements.input.val();
     model.addItem(newItem);
     view.renderList(model.data);
@@ -91,23 +97,34 @@ function Controller(model, view) {
     view.renderList(model.data);
   };
 
+  
   function editItem() {
     var item = $(this).attr('data-value'); // получаем значение, которое нужно найти в массиве
-    var itemIndex = $(this).attr('item-index');
+    var itemIndex = $(this).attr('item-index'); // получаем индекс этого значения в массиве
+
+    console.log('itemIndex in editItem: ',itemIndex);
     var editedItem = model.editItem(item); // ищем полученное значение в массиве 
-    console.log(editedItem, itemIndex);
 
     view.elements.input.val(editedItem); // отправляем полученное значение в инпут для редактирования
 
-    view.elements.addBtn.addClass('item-change').removeClass('item-add').html('Edit');
-    console.log($('.item-change'));
+    $('.item-add').addClass('item-change').removeClass('item-add').html('Edit'); // меняем класс и внутренность кнопки
     $('.item-change').on('click', replaceItem);
+      
+      function replaceItem() {
+        if( !$(this).hasClass('item-change') )
+          return;
+        console.log('itemIndex in replaceItem: ', itemIndex)
+        
+        var newItem = view.elements.input.val(); // записываем новое содержимое инпута в переменную
+        model.replaceEditedItem(newItem, itemIndex); // передаем в модель новое содержимое и индекс изменяемого элемента
+        view.renderList(model.data); //рендерим
+        view.elements.input.val('');
+
+
+        $(this).addClass('item-add').removeClass('item-change').html('Add'); //возвращаем кнопке первоначальный вид
+      };
   };
 
-  function replaceItem() {
-    $(this).addClass('item-add').removeClass('item-change').html('Add');
-    console.log($('.item-add'))
-  };
 
 
 
@@ -115,7 +132,7 @@ function Controller(model, view) {
 
 
 $(function () {
-  var firstToDoList = ['learn JS', 'learn html', 'make cofee'];
+  var firstToDoList = ['0', '1', '2'];
   var model = new Model(firstToDoList);
   console.log(model);
 
