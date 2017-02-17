@@ -100,9 +100,10 @@ function Controller(model, view) {
   
   function editItem() {
     var item = $(this).attr('data-value'); // получаем значение, которое нужно найти в массиве
-    var itemIndex = $(this).attr('item-index'); // получаем индекс этого значения в массиве
-
-    console.log('itemIndex in editItem: ',itemIndex);
+    var itemIndex = $('.item-edit').index(this); // получаем индекс этого значения в массиве
+    var editItem = $('.item-show').eq(itemIndex).html();
+    console.log('itemIndex in editItem: ', itemIndex);
+    console.log(editItem);
     var editedItem = model.editItem(item); // ищем полученное значение в массиве 
 
     view.elements.input.val(editedItem); // отправляем полученное значение в инпут для редактирования

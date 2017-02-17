@@ -21,7 +21,7 @@
 
 	<script type="text/tmpl" id="list-template">
 		<% for (var i = 0; i < data.length; i++) { %>
-			<li><%=data[i] %> <span data-value="<%= data[i] %>" class="item-delete">x</span><span data-value="<%= data[i] %>" item-index="<%= i %>" class="item-edit" style="margin-left: 25px">edit</span></li>
+			<li class="item-show"><%=data[i] %> <span data-value="<%= data[i] %>" class="item-delete">x</span><span data-value="<%= data[i] %>" item-index="<%= i %>" class="item-edit" style="margin-left: 25px">edit</span></li>
 		<% }; %>
 	</script>
 
