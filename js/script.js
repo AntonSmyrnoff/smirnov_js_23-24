@@ -7,46 +7,28 @@ function Model(data) {
      if (item.length == 0) {
       return;
      } 
-
     self.data.push(item);
-
     return self.data;
   };
-
   
   self.removeItem = function (item) {
     var index = self.data.indexOf(item);
-
     if (index == -1) {
       return;
     }
-
     self.data.splice(index, 1);
-
     return self.data;
   };
-
   
-  self.editItem = function (item) {
+  self.editItem = function (item, newItem) {
     var index = self.data.indexOf(item); //получаем индекс редактируемого элемента
-
-    var editedItem = self.data.slice(index, index+1); // берем сам элемент для редактирования и возвращаем его
-
+    if (index==-1) {
+      return
+    };
+    var editedItem = self.data.splice(index, 1, newItem); // берем сам элемент для редактирования и возвращаем его
     return editedItem;
   };
 
-  
-  self.replaceEditedItem = function (item, index) {
-    if (item.length == 0) {
-      return;
-    }
-
-    self.data.splice(index, 1, item);
-    console.log('itemIndex in Model: ', index);
-    console.log('');
-    return self.data;
-
-  }
 };
 
 
@@ -55,14 +37,12 @@ function View(model) {
 
   function init () {
     var wrapper = tmpl( $('#wrapper-template').html());
-    
     $('body').append(wrapper);
     self.elements = {
       input: $('.item-value'),
       addBtn: $('.item-add'),
       listContainer: $('.item-list'),         
     };
-
     self.renderList(model.data);
   };
 
@@ -75,12 +55,11 @@ function View(model) {
 };
 
 
-
 function Controller(model, view) {
   var self = this;
   view.elements.addBtn.on('click', addItem);
   view.elements.listContainer.on('click', '.item-delete', removeItem);
-  view.elements.listContainer.on('click', '.item-edit', editItem);
+  view.elements.listContainer.on('click', '.item-show', editItem);
 
   function addItem() {
     if( !$(this).hasClass('item-add') )
@@ -97,51 +76,29 @@ function Controller(model, view) {
     view.renderList(model.data);
   };
 
-  
   function editItem() {
     var item = $(this).attr('data-value'); // получаем значение, которое нужно найти в массиве
-    var itemIndex = $('.item-edit').index(this); // получаем индекс этого значения в массиве
-    var editItem = $('.item-show').eq(itemIndex).html();
-    console.log('itemIndex in editItem: ', itemIndex);
-    console.log(editItem);
-    var editedItem = model.editItem(item); // ищем полученное значение в массиве 
+    $(this).hide();
+    var input = $(this).siblings('.edit-item');
+    input.val(item).show().select();
+    input.keypress(function(e) { //ввод нового значения по нажатию Enter;
+      if(e.keyCode==13) replaceItem()
+   });
+    input.focusout(replaceItem); // ввод нового значения по клику в любом месте вне инпута
 
-    view.elements.input.val(editedItem); // отправляем полученное значение в инпут для редактирования
-
-    $('.item-add').addClass('item-change').removeClass('item-add').html('Edit'); // меняем класс и внутренность кнопки
-    $('.item-change').on('click', replaceItem);
-      
       function replaceItem() {
-        if( !$(this).hasClass('item-change') )
-          return;
-        console.log('itemIndex in replaceItem: ', itemIndex)
-        
-        var newItem = view.elements.input.val(); // записываем новое содержимое инпута в переменную
-        model.replaceEditedItem(newItem, itemIndex); // передаем в модель новое содержимое и индекс изменяемого элемента
-        view.renderList(model.data); //рендерим
-        view.elements.input.val('');
-
-
-        $(this).addClass('item-add').removeClass('item-change').html('Add'); //возвращаем кнопке первоначальный вид
-      };
+        var newItem = input.val();
+        model.editItem(item, newItem);
+        view.renderList(model.data);
+    }
   };
-
-
-
-
 };
 
-
 $(function () {
-  var firstToDoList = ['0', '1', '2'];
+  var firstToDoList = ['Task 1', 'Task 2', 'Task 3', 'Task 4', 'Task 5'];
   var model = new Model(firstToDoList);
-  console.log(model);
-
   var view = new View(model);
-  console.log(view);
-
   var controller = new Controller(model, view);
-  console.log(controller);
 });
 
 

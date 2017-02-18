@@ -1,5 +1,71 @@
 * {
 	margin: 0;
 	padding: 0;
+	font-family: Arial, sans-serif
 }
 
+.wrapper {
+	margin: 50px auto;
+	width: 500px;
+	padding-left: 50px;
+}
+
+.item-list {
+	list-style: none;
+	margin-top: 20px;
+}
+
+.item-list li span:first-child  {
+	background-color: green;
+	display: inline-block;
+	width: 350px;
+	padding: 11px;
+	margin: 5px 0;
+	border: 2px solid black;
+    border-radius: 5px;
+	box-sizing: border-box;
+}
+
+.item-list li input  {
+	background-color: green;
+	width: 324px;
+	padding: 13px;
+	margin: 5px 0;
+	border: none;
+	font-size: 16px;
+}
+
+.fa-trash-o {
+	margin-left: 20px;
+	cursor: pointer;
+}
+
+.controller {
+	margin-top: 10px;
+}
+
+.controller input {
+	outline: none; border: none;
+	padding: 12px;
+	width: 200px;
+	font-size: 16px;
+}
+
+.controller input:focus {
+	outline: solid 1px gray;
+}
+
+.controller button {
+    font-size: 16px;
+	float: right;
+	margin-right: 150px;
+	background-color: blue;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    color: white;
+    cursor: pointer;
+    padding: 12px 25px;
+    text-align: center;
+    text-decoration: none;
+}
