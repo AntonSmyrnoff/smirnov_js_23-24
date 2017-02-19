@@ -1,4 +1,39 @@
-function Model(data) {
+requirejs.config({
+  paths: {
+    'jquery': 'lib/jquery.min',
+    'tmpl': 'lib/tmpl'
+  },
+  shim: {
+    'jquery': {
+      exports: 'jQuery'
+    },
+    'tmpl': {
+      exports: 'tmpl'
+    },
+  }
+});
+
+requirejs(
+  [
+    'jquery',
+    'tmpl',
+    'modules/model',
+    'modules/view',
+    'modules/controller'
+  ],
+  function($, tmpl, Model, View, Controller) {
+    $(function () {
+      var firstToDoList = ['Task 1', 'Task 2', 'Task 3', 'Task 4', 'Task 5'];
+      var model = new Model(firstToDoList);
+      var view = new View(model);
+      var controller = new Controller(model, view);
+    });
+  }
+);
+
+
+
+/*function Model(data) {
   var self = this;
   
   self.data = data;
@@ -25,14 +60,14 @@ function Model(data) {
     if (index==-1) {
       return
     };
-    var editedItem = self.data.splice(index, 1, newItem); // берем сам элемент для редактирования и возвращаем его
-    return editedItem;
+    var editedArr = self.data.splice(index, 1, newItem); // берем сам элемент для редактирования и возвращаем его
+    return editedArr;
   };
 
-};
+};*/
 
 
-function View(model) {
+/*function View(model) {
   var self = this;
 
   function init () {
@@ -52,10 +87,10 @@ function View(model) {
   };
 
   init();
-};
+};*/
 
 
-function Controller(model, view) {
+/*function Controller(model, view) {
   var self = this;
   view.elements.addBtn.on('click', addItem);
   view.elements.listContainer.on('click', '.item-delete', removeItem);
@@ -92,14 +127,9 @@ function Controller(model, view) {
         view.renderList(model.data);
     }
   };
-};
+};*/
 
-$(function () {
-  var firstToDoList = ['Task 1', 'Task 2', 'Task 3', 'Task 4', 'Task 5'];
-  var model = new Model(firstToDoList);
-  var view = new View(model);
-  var controller = new Controller(model, view);
-});
+
 
 
 
